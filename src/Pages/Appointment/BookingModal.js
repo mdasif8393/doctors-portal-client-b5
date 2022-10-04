@@ -4,7 +4,7 @@ import auth from '../../firebase.init';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
 
-const BookingModal = ({treatment, date, setTreatment}) => {
+const BookingModal = ({treatment, date, setTreatment, refetch}) => {
 
     const [user, loading, error] = useAuthState(auth);
     const formattedDate = format(date, 'PP')
@@ -21,7 +21,7 @@ const BookingModal = ({treatment, date, setTreatment}) => {
             slot,
             patient: user?.email,
             patientName: user?.displayName,
-            phone: event?.target?.phone?.number,
+            phone: event?.target?.phone?.value,
         }
 
         fetch("http://localhost:5000/booking", {
@@ -33,7 +33,6 @@ const BookingModal = ({treatment, date, setTreatment}) => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             if(data?.success){
                 toast( `Appointment is set, ${formattedDate} at ${slot}`)
             }
@@ -42,6 +41,7 @@ const BookingModal = ({treatment, date, setTreatment}) => {
             }
 
             //to close the modal
+            refetch()
             setTreatment(null)
         })
 
@@ -65,7 +65,7 @@ const BookingModal = ({treatment, date, setTreatment}) => {
                         </select>
                         <input name="name" type="text" value={user?.displayName || ''} disabled className="input w-full max-w-xs bg-white" />
                         <input name="email" type="email" value={user?.email || ''} disabled className="input w-full max-w-xs bg-white" />
-                        <input name="number" required type="number" placeholder="Your Number" className="input w-full max-w-xs bg-white" />
+                        <input name="phone" required type="number" placeholder="Your Number" className="input w-full max-w-xs bg-white" />
                         <input type="submit" value="Submit" className="btn btn-accent w-3/4"/>
                     </form>
                 <div className="modal-action">

@@ -5,6 +5,7 @@ import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import Loading from "../Shared/Loading";
 import { Link, useNavigate } from "react-router-dom";
 import auth from '../../firebase.init';
+import useToken from '../../hooks/useToken';
 
 const SignUp = () => {
 
@@ -14,7 +15,7 @@ const SignUp = () => {
     const onSubmit = async (data) => {
         await createUserWithEmailAndPassword(data?.email, data?.password);
         await updateProfile({ displayName:data?.name});
-        navigate("/appointment");
+        
     };
 
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
@@ -28,15 +29,17 @@ const SignUp = () => {
 
       const [updateProfile, updating, updateError] = useUpdateProfile(auth);
 
-    if(gUser || user){
-        console.log(gUser || user);
+    // token
+    const [token] = useToken(user || gUser);
+    if(token){
+        navigate("/appointment");
     }
     
     
 
     let signInError;
     if(gError || error || updateError){
-        signInError = <small className="text-center text-red-500">{gError?.message || error.message || updateError?.message}</small>
+        signInError = <small className="text-center text-red-500">{gError?.message || error?.message || updateError?.message}</small>
     }
 
     if(loading || gLoading || updating){
