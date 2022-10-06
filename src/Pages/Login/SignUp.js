@@ -52,7 +52,7 @@ const SignUp = () => {
 
           <h2 className="text-center text-3xl text-gray-700 font-bold">Sign Up</h2>
           
-          <form onSubmit={handleSubmit(onSubmit)} className="text-gray-600">
+        <form onSubmit={handleSubmit(onSubmit)} className="text-gray-600">
 
             {/* Name */}
         <div className="form-control w-full max-w-xs">
