@@ -1,21 +1,15 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import quote from '../../assets/icons/quote.svg'
+import React, { useEffect, useState } from 'react';
 import Review from './Review';
+import quote from '../../assets/icons/quote.svg'
 
-const Testimonials = () => {
-
+const Reviews = () => {
     const [allReviews, setAllReviews] = useState([]);
-    
 
     useEffect(()=> {
         fetch("http://localhost:5000/review")
         .then(res => res.json())
-        .then(data => setAllReviews(data.slice(0,6)))
+        .then(data => setAllReviews(data))
     },[])
-
-    
     return (
         <section className="my-28">
             <div className="flex justify-between">
@@ -23,10 +17,8 @@ const Testimonials = () => {
                     <h4 className="text-xl text-primary font-bold">Testimonials</h4>
                     <h2 className="text-3xl">What our patients say</h2>
                 </div>
-
-                <div className="flex justify-between">
-                <img className=" w-28 lg:w-48" src={quote} alt="" />
-                    <Link to="/review"><button className="btn btn-active btn-link">See All Reviews</button></Link>
+                <div>
+                    <img className=" w-28 lg:w-48" src={quote} alt="" />
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -38,4 +30,4 @@ const Testimonials = () => {
     );
 };
 
-export default Testimonials;
+export default Reviews;
